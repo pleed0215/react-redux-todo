@@ -36,7 +36,11 @@ export default ({ dispatch, isCompleted, todo, ...props }) => {
     });
   };
   const onEditClick = (e) => {
-    if (displayEdit) {
+    if (!displayEdit) {
+      setTodo(todo);
+    } else if (displayEdit && inputTodo !== todo) {
+      console.log(inputTodo);
+      console.log(todo);
       dispatch({
         type: ITEM_MODIFY,
         payload: {
@@ -62,12 +66,7 @@ export default ({ dispatch, isCompleted, todo, ...props }) => {
         checked={isCompleted}
       />
       {displayEdit && (
-        <input
-          type="text"
-          style={{ display: "none" }}
-          value={inputTodo}
-          onChange={onChange}
-        />
+        <input type="text" value={inputTodo} onChange={onChange} />
       )}
       {!displayEdit && <span>{todo}</span>}
       <button onClick={onEditClick}>{displayEdit ? "Done" : "Edit"}</button>

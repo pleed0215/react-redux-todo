@@ -41,15 +41,16 @@ function App() {
           <h2>You have nothing to do. Try something.</h2>
         )}
         <ul>
-          {state?.todos?.map((todo) => (
-            <TodoItem
-              id={todo.id}
-              key={todo.id}
-              dispatch={dispatch}
-              isCompleted={todo.isCompleted}
-              todo={todo.todo}
-            />
-          ))}
+          {state.todos &&
+            state?.todos?.map((todo) => (
+              <TodoItem
+                id={todo.id}
+                key={todo.id}
+                dispatch={dispatch}
+                isCompleted={todo.isCompleted}
+                todo={todo.todo}
+              />
+            ))}
         </ul>
       </div>
       <div>

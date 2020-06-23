@@ -8,4 +8,5 @@
 - [x] uuid 라이브러리를 활용한다.
 - [x] todo, useReducer를 활용하여 todo list add, remove, complete, uncomplete 기능을 구현했다.
 - [x] 다른 컴포넌트에서 reducer를 활용해봤다. dispatch를 활용하여.
-- [ ] code challenge: modify 기능 구현 중.
+- [x] code challenge: modify 기능 구현 중.
+- [ ] createContext를 이용하여 다시 시작해볼 것.

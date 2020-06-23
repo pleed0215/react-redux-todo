@@ -8,6 +8,7 @@ export const ITEM_MODIFY = "@todo_item_modify";
 
 export default (state, action) => {
   switch (action.type) {
+    // adding item to state. using uuid(), can make random id,
     case ITEM_ADD: {
       const newState =
         state && state.todos && state.todos.length > 0
@@ -77,21 +78,44 @@ export default (state, action) => {
         todos: [...state.todos, willRemoveCompleted],
         completed: removedCompleted,
       };
-      console.log(willRemoveCompleted);
-      console.log(removedCompleted);
-      console.log(newState);
       window.localStorage.setItem("todos", JSON.stringify(newState));
       return newState;
     }
 
     case ITEM_MODIFY: {
-      const targetTodoIndex = action.payload.isTodo
-        ? state.todos.findIndex((todo) => todo.id === action.payload.id)
-        : state.completed.findIndex((todo) => todo.id === action.payload.id);
-      const targetTodo = action.payload.isTodo
-        ? state.todos[targetTodoIndex]
-        : state.completed[targetTodoIndex];
+      let targetTodoIndex, targetTodo, newState;
+      if (!action.payload.isTodo) {
+        targetTodoIndex = state.todos.findIndex(
+          (todo) => todo.id === action.payload.id
+        );
+        targetTodo = state.todos[targetTodoIndex];
+        newState = {
+          ...state,
+          todos: [
+            ...state.todos.slice(0, targetTodoIndex),
+            { ...targetTodo, todo: action.payload.modifyText },
+            ...state.todos.slice(targetTodoIndex + 1, state.todos.length),
+          ],
+        };
+      } else {
+        targetTodoIndex = state.completed.findIndex(
+          (todo) => todo.id === action.payload.id
+        );
+        targetTodo = state.completed[targetTodoIndex];
+        newState = {
+          ...state,
+          completed: [
+            ...state.completed.slice(0, targetTodoIndex),
+            { ...targetTodo, todo: action.payload.modifyText },
+            ...state.completed.slice(
+              targetTodoIndex + 1,
+              state.completed.length
+            ),
+          ],
+        };
+      }
 
+      window.localStorage.setItem("todos", JSON.stringify(newState));
       return newState;
     }
 
