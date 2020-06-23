@@ -1,14 +1,11 @@
 import React, { useReducer, useState } from "react";
-import reducer, { ITEM_ADD } from "./reducer";
+import { ITEM_ADD } from "./reducer";
 import TodoItem from "./TodoItem";
+import { useTodoContext } from "./Context";
 
-function App() {
-  const [state, dispatch] = useReducer(
-    reducer,
-    JSON.parse(window.localStorage.getItem("todos")) || {}
-  );
-
+const FormInput = () => {
   const [inputTodo, setInputTodo] = useState("");
+  const { dispatch } = useTodoContext();
 
   const onChange = (e) => {
     setInputTodo(e.target.value);
@@ -19,21 +16,24 @@ function App() {
     dispatch({ type: ITEM_ADD, payload: inputTodo });
     setInputTodo("");
   };
+  return (
+    <form onSubmit={onSubmit}>
+      <input
+        type="text"
+        placeholder="Write your things to do"
+        onChange={onChange}
+        value={inputTodo}
+      />
+      <input type="submit" value="TODO" />
+    </form>
+  );
+};
+
+const DisplayList = () => {
+  const { state, dispatch } = useTodoContext();
 
   return (
     <>
-      <div>
-        <h1>Todo list with React useReducer</h1>
-        <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            placeholder="Write your things to do"
-            onChange={onChange}
-            value={inputTodo}
-          />
-          <input type="submit" value="TODO" />
-        </form>
-      </div>
       <div>
         {state?.todos?.length > 0 ? (
           <h2>Your list things to do</h2>
@@ -70,6 +70,20 @@ function App() {
             </ul>
           </>
         )}
+      </div>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <>
+      <div>
+        <h1>Todo list with React useReducer</h1>
+        <FormInput />
+      </div>
+      <div>
+        <DisplayList />
       </div>
     </>
   );
